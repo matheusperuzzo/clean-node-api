@@ -11,12 +11,15 @@
     "test:ci": "npm test -- --coverage"
   },
   "standard": {
-    "env": ["jest"]
+    "env": [
+      "jest"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "standard": "^17.1.0"
+    "standard": "^17.1.0",
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "husky": "^8.0.3",
