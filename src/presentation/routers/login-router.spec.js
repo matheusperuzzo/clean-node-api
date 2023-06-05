@@ -164,6 +164,7 @@ describe('Login Router', () => {
     }
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 
   test('Should return 400 if an invalid email is provided', async () => {
@@ -178,5 +179,31 @@ describe('Login Router', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
+
+  test('Should return 500 if no EmailValidator is provided', async () => {
+    const sut = new LoginRouter(makeAuthUseCase())
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if EmailValidator has no isValid method', async () => {
+    const sut = new LoginRouter(makeAuthUseCase(), {})
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 })
